@@ -59,3 +59,11 @@
 
 ### Q: Can I restrict allowed file types?  
 **A:** Yes, you can configure allowed file types in the **plugin settings**.
+
+## Contributing
+
+We welcome contributions! Feel free to fork this repository and submit a pull request.
+
+## License
+
+This plugin is licensed under the **GPL-3.0-or-later** license.
