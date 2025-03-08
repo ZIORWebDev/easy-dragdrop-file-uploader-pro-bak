@@ -4,16 +4,21 @@
 
 ## Features
 
-**Seamless Integration** – Adds a FilePond uploader field to Elementor Pro Forms  
-**Asynchronous Uploads** – Upload files in the background without page reloads  
-**Drag & Drop Support** – Easily upload files by dragging them into the field  
-**Customizable Settings** – Configure file size, allowed types, and more  
-**Secure Upload Handling** – Uses WordPress file handling best practices  
+### Free Features:
+- **Seamless Integration** – Adds a FilePond uploader field to Elementor Pro Forms  
+- **Asynchronous Uploads** – Upload files in the background without page reloads  
+- **Drag & Drop Support** – Easily upload files by dragging them into the field  
+- **Customizable Settings** – Configure file size, allowed types, and more  
+- **Secure Upload Handling** – Uses WordPress file handling best practices  
+
+### Premium Features:
+- **Add Uploaded Images to Media Library** – Automatically save uploaded images to the WordPress Media Library  
+- **Attach Uploaded Files to Emails** – Send uploaded files as attachments in Elementor form email notifications  
 
 ## Installation
 
 1. **Download & Upload:**  
-   - Download the plugin ZIP from GitHub or the WordPress plugin directory.
+   - Purchase the plugin from Envato or Freemius.
    - Upload it to your WordPress site via **Plugins → Add New → Upload Plugin**.
 
 2. **Activate the Plugin:**  
@@ -30,7 +35,8 @@
    - Configure the field settings as needed.
 
 2. **Handle File Uploads:**  
-   - Uploaded files are stored securely and can be accessed via the WordPress Media Library.
+   - Uploaded files are stored securely and can be accessed via the WordPress Media Library (premium feature).  
+   - Files can also be attached to form submission emails (premium feature).
 
 ## Screenshots
 
@@ -53,15 +59,3 @@
 
 ### Q: Can I restrict allowed file types?  
 **A:** Yes, you can configure allowed file types in the **plugin settings**.
-
-## Contributing
-
-We welcome contributions! Feel free to fork this repository and submit a pull request.
-
-## License
-
-This plugin is licensed under the **GPL-2.0-or-later** license.
-
----
-
-Developed by **ZiorWeb.Dev**
