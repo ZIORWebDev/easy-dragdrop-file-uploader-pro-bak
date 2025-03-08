@@ -1,6 +1,6 @@
-# FilePond WP Integration 
+# FilePond WP Integration Pro
 
-**FilePond WP Integration** is a WordPress plugin that integrates [FilePond](https://pqina.nl/filepond/) with Elementor Pro Forms, allowing seamless file uploads with advanced features like image previews, drag-and-drop, and asynchronous uploads.
+**FilePond WP Integration Pro** is a WordPress plugin that integrates [FilePond](https://pqina.nl/filepond/) with Elementor Pro Forms, allowing seamless file uploads with advanced features like image previews, drag-and-drop, and asynchronous uploads.
 
 ## Features
 
