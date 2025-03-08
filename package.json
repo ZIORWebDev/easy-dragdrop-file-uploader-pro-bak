@@ -1,7 +1,7 @@
 {
-  "name": "filepond-wp-integration",
+  "name": "filepond-wp-integration-pro",
   "version": "1.0.0",
-  "repository": "https://github.com/ZIORWebDev/filepond-wp-integration.git",
+  "repository": "https://github.com/ZIORWebDev/filepond-wp-integration-pro.git",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
