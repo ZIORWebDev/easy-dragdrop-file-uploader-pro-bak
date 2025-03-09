@@ -83,10 +83,7 @@ class Plugin {
 		if ( ! defined( "PLUGIN_URL" ) ) {
 			define( "PLUGIN_URL", plugin_dir_url( __FILE__ ) );
 		}
-
-		if ( ! defined( "PLUGIN_FILE" ) ) {
-			define( "PLUGIN_FILE", __FILE__ );
-		}
+	}
 
 		if ( ! defined( "ENCRYPT_KEY" ) ) {
 			define( "ENCRYPT_KEY", 'GBJJylX5wL8B15h55BlON9PUn7eLtL9R' );
