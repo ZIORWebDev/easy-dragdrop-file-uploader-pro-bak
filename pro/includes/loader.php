@@ -46,7 +46,7 @@ class Loader {
 			}
 
 			$classes = array(
-				'Settings' => PLUGIN_DIR_PRO . 'includes/classes/class-settings.php',
+				'Settings' => WP_FILEPOND_PLUGIN_DIR_PRO . 'includes/classes/class-settings.php',
 			);
 
 			$class_name = explode( "\\", $class );
