@@ -76,10 +76,6 @@ class Plugin {
 			define( "WP_FILEPOND_PLUGIN_DIR", plugin_dir_path( __FILE__ ) );
 		}
 
-		if ( ! defined( "WP_FILEPOND_PLUGIN_DIR_PRO" ) ) {
-			define( "WP_FILEPOND_PLUGIN_DIR_PRO", plugin_dir_path( __FILE__ ) . 'pro/' );
-		}
-
 		if ( ! defined( "WP_FILEPOND_PLUGIN_URL" ) ) {
 			define( "WP_FILEPOND_PLUGIN_URL", plugin_dir_url( __FILE__ ) );
 		}
@@ -87,6 +83,14 @@ class Plugin {
 		if ( ! defined( "WP_FILEPOND_PLUGIN_FILE" ) ) {
 			define( "WP_FILEPOND_PLUGIN_FILE", __FILE__ );
 		}
+
+	/**
+	 * Includes necessary plugin files.
+	 */
+	private function includes(): void {
+		require_once WP_FILEPOND_PLUGIN_DIR . 'vendor/autoload.php';
+		require_once WP_FILEPOND_PLUGIN_DIR . 'includes/loader.php';
+		require_once WP_FILEPOND_PLUGIN_DIR . 'includes/functions.php';
 	}
 
 	/**
