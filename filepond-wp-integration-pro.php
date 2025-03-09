@@ -41,12 +41,12 @@ class Plugin {
 	 * Includes necessary plugin files.
 	 */
 	private function includes(): void {
-		require_once PLUGIN_DIR . 'vendor/autoload.php';
-		require_once PLUGIN_DIR . 'includes/functions.php';
-		require_once PLUGIN_DIR . 'includes/loader.php';
+		require_once WP_FILEPOND_PLUGIN_DIR . 'vendor/autoload.php';
+		require_once WP_FILEPOND_PLUGIN_DIR . 'includes/functions.php';
+		require_once WP_FILEPOND_PLUGIN_DIR . 'includes/loader.php';
 
-		require_once PLUGIN_DIR_PRO . 'includes/functions.php';
-		require_once PLUGIN_DIR_PRO . 'includes/loader.php';
+		require_once WP_FILEPOND_PLUGIN_DIR_PRO . 'includes/functions.php';
+		require_once WP_FILEPOND_PLUGIN_DIR_PRO . 'includes/loader.php';
 	}
 
 	/**
@@ -72,21 +72,20 @@ class Plugin {
 	 * Ensures constants are only defined once to prevent conflicts.
 	 */
 	private function setup_constants(): void {
-		if ( ! defined( "PLUGIN_DIR" ) ) {
-			define( "PLUGIN_DIR", plugin_dir_path( __FILE__ ) );
+		if ( ! defined( "WP_FILEPOND_PLUGIN_DIR" ) ) {
+			define( "WP_FILEPOND_PLUGIN_DIR", plugin_dir_path( __FILE__ ) );
 		}
 
-		if ( ! defined( "PLUGIN_DIR_PRO" ) ) {
-			define( "PLUGIN_DIR_PRO", plugin_dir_path( __FILE__ ) . 'pro/' );
+		if ( ! defined( "WP_FILEPOND_PLUGIN_DIR_PRO" ) ) {
+			define( "WP_FILEPOND_PLUGIN_DIR_PRO", plugin_dir_path( __FILE__ ) . 'pro/' );
 		}
 
-		if ( ! defined( "PLUGIN_URL" ) ) {
-			define( "PLUGIN_URL", plugin_dir_url( __FILE__ ) );
+		if ( ! defined( "WP_FILEPOND_PLUGIN_URL" ) ) {
+			define( "WP_FILEPOND_PLUGIN_URL", plugin_dir_url( __FILE__ ) );
 		}
-	}
 
-		if ( ! defined( "ENCRYPT_KEY" ) ) {
-			define( "ENCRYPT_KEY", 'GBJJylX5wL8B15h55BlON9PUn7eLtL9R' );
+		if ( ! defined( "WP_FILEPOND_PLUGIN_FILE" ) ) {
+			define( "WP_FILEPOND_PLUGIN_FILE", __FILE__ );
 		}
 	}
 
@@ -118,7 +117,7 @@ class Plugin {
 	 * Loads plugin text domain for translations.
 	 */
 	public function load_plugin_textdomain(): void {
-		load_plugin_textdomain( 'wp-filepond', false, PLUGIN_DIR . '/languages' );
+		load_plugin_textdomain( 'wp-filepond', false, WP_FILEPOND_PLUGIN_DIR . '/languages' );
 	}
 
 	/**
@@ -161,5 +160,5 @@ $plugin = Plugin::get_instance();
 /**
  * Registers plugin activation and deactivation hooks.
  */
-register_activation_hook( PLUGIN_FILE, array( $plugin, 'activate_plugin' ) );
-register_deactivation_hook( PLUGIN_FILE, array( $plugin, 'deactivate_plugin' ) );
+register_activation_hook( WP_FILEPOND_PLUGIN_FILE, array( $plugin, 'activate_plugin' ) );
+register_deactivation_hook( WP_FILEPOND_PLUGIN_FILE, array( $plugin, 'deactivate_plugin' ) );
