@@ -15,88 +15,40 @@ class Settings {
 	 */
 	private static $instance = null;
 
-	/**
-	 * Loads a template file using WordPress's load_template function.
-	 *
-	 * This function checks if the template file exists before including it.
-	 * It also extracts the provided data array into separate variables
-	 * to be accessible inside the template.
-	 *
-	 * @param string $template_name Template file name (without .php extension).
-	 * @param array  $data          Optional. Data to pass to the template. Default empty array.
-	 *
-	 * @return void
-	 */
-	private function load_template( string $template_name, array $data = [] ): void {
-		$template_file = PLUGIN_DIR . sprintf( 'views/%s.php', $template_name );
+	private function get_settings_fields( $settings_fields ): array {
+		$settings_fields = array_merge( $settings_fields, array(
+			array(
+				'id'       => 'wp_filepond_enable_preview',
+				'title'    => __( 'Enable Preview', 'wp-filepond' ),
+				'callback' => array( $this, 'enable_preview_callback' ),
+			),
+			array(
+				'id'       => 'wp_filepond_preview_height',
+				'title'    => __( 'Preview Height', 'wp-filepond' ),
+				'callback' => array( $this, 'preview_height_callback' ),
+			),
+			array(
+				'id'       => 'wp_filepond_upload_location',
+				'title'    => __( 'Upload Location', 'wp-filepond' ),
+				'callback' => array( $this, 'upload_location_callback' ),
+			),
+			array(
+				'id'       => 'wp_filepond_enable_media_library',
+				'title'    => __( 'Add file to media library', 'wp-filepond' ),
+				'callback' => array( $this, 'enable_media_library_callback' ),
+			)
+		) );
 
-		if ( ! file_exists( $template_file ) ) {
-			return;
-		}
-
-		// Extract data into variables to be used in the template
-		if ( ! empty( $data ) ) {
-			extract( $data, EXTR_SKIP ); // Prevents overwriting existing variables
-		}
-
-		// Load the template and pass data
-		load_template( $template_file, false, $data );
+		return $settings_fields;
 	}
 
 	/**
-	 * Class constructor.
+	 * Returns the settings options for the plugin.
 	 *
-	 * Hooks into WordPress to add the plugin's settings page and register settings.
-	 *
-	 * @return void
+	 * @return array The settings options.
 	 */
-	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
-		add_action( 'admin_init', array( $this, 'register_settings' ) );
-	}
-
-	/**
-	 * Returns instance of Settings.
-	 *
-	 * @return object
-	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * Adds the settings page under the WordPress "Settings" menu.
-	 *
-	 * This function registers a submenu page under "Settings" in the WordPress admin dashboard.
-	 * Only users with the `manage_options` capability can access the settings page.
-	 *
-	 * @return void
-	 */
-	public function add_settings_page(): void {
-		add_options_page(
-			__( 'WP FilePond', 'wp-filepond' ), // Page title
-			__( 'WP FilePond', 'wp-filepond' ), // Menu title
-			'manage_options',                   // Required capability
-			'wp-filepond',                       // Menu slug
-			array( $this, 'render_settings_page' ) // Callback function
-		);
-	}
-
-	/**
-	 * Registers settings, sections, and fields for the plugin.
-	 *
-	 * This function registers settings with WordPress, adds a settings section, 
-	 * and defines various fields for user configuration.
-	 *
-	 * @return void
-	 */
-	public function register_settings(): void {
-		// Register settings
-		$settings = apply_filters( 'wp_filepond_register_settings', array(
+	private function get_settings_options( $settings_options ): array {
+		$settings_options = array_merge( $settings_options, array(
 			array(
 				'option_group' => 'wp_filepond_options_group',
 				'option_name'  => 'wp_filepond_button_label',
@@ -132,88 +84,53 @@ class Settings {
 				'option_name'  => 'wp_filepond_max_file_size',
 				'sanitize'     => 'absint',
 			),
-		));
+		) );
+		
+		print_r( $settings_options );
 
-		foreach ( $settings as $setting ) {
-			register_setting( $setting['option_group'], $setting['option_name'], array(
-				'sanitize_callback' => $setting['sanitize']
-			) );
-		}
-
-		// Add the main settings section
-		add_settings_section(
-			'wp_filepond_main_section',
-			__( 'Main Settings', 'wp-filepond' ),
-			array( $this, 'section_callback' ),
-			'wp-filepond'
-		);
-
-		// Define fields
-		$fields = apply_filters( 'wp_filepond_register_fields', array(
-			array(
-				'id'       => 'wp_filepond_enable_preview',
-				'title'    => __( 'Enable Preview', 'wp-filepond' ),
-				'callback' => array( $this, 'enable_preview_callback' ),
-			),
-			array(
-				'id'       => 'wp_filepond_max_file_size',
-				'title'    => __( 'Max. File Size', 'wp-filepond' ),
-				'callback' => array( $this, 'max_file_size_callback' ),
-			),
-			array(
-				'id'       => 'wp_filepond_preview_height',
-				'title'    => __( 'Preview Height', 'wp-filepond' ),
-				'callback' => array( $this, 'preview_height_callback' ),
-			),
-			array(
-				'id'       => 'wp_filepond_button_label',
-				'title'    => __( 'Default Button Label', 'wp-filepond' ),
-				'callback' => array( $this, 'button_label_callback' ),
-			),
-			array(
-				'id'       => 'wp_filepond_file_types_allowed',
-				'title'    => __( 'Default File Types Allowed', 'wp-filepond' ),
-				'callback' => array( $this, 'file_types_allowed_callback' ),
-			),
-			array(
-				'id'       => 'wp_filepond_file_type_error',
-				'title'    => __( 'File Type Error Message', 'wp-filepond' ),
-				'callback' => array( $this, 'file_type_error_message_callback' ),
-			),
-			array(
-				'id'       => 'wp_filepond_file_size_error',
-				'title'    => __( 'File Size Error Message', 'wp-filepond' ),
-				'callback' => array( $this, 'file_size_error_message_callback' ),
-			),
-		));
-
-		// Register each field
-		foreach ( $fields as $field ) {
-			add_settings_field(
-				$field['id'],
-				$field['title'],
-				$field['callback'],
-				'wp-filepond',
-				'wp_filepond_main_section'
-			);
-		}
+		return $settings_options;
 	}
 
 	/**
-	 * Renders the settings page.
+	 * Returns the settings sections for the plugin.
 	 *
-	 * This function loads the settings template and provides necessary data.
+	 * @return array The settings sections.
+	 */
+	private function get_settings_sections( $settings_sections ): array {
+		$settings_sections = array_merge( $settings_sections, array(
+			'wp_filepond_pro_section' => array(
+				'title'    => __( 'Pro Settings', 'wp-filepond' ),
+				'callback' => array( $this, 'section_callback' )
+			)
+		) );
+
+		return $settings_sections;
+	}
+
+	/**
+	 * Class constructor.
+	 *
+	 * Hooks into WordPress to add the plugin's settings page and register settings.
 	 *
 	 * @return void
 	 */
-	public function render_settings_page(): void {
-		// Data to pass to the template
-		$data = array(
-			'options_group' => 'wp_filepond_options_group',
-			'page_slug'     => 'wp-filepond',
-		);
+	public function __construct() {
+		add_filter( 'wp_filepond_settings_fields', array( $this, 'get_settings_fields' ) );
+		add_filter( 'wp_filepond_settings_options', array( $this, 'get_settings_options' ) );
+		add_filter( 'wp_filepond_settings_sections', array( $this, 'get_settings_sections' ) );
+	}
 
-		$this->load_template( 'settings', $data );
+	/**
+	 * Returns instance of Settings.
+	 *
+	 * @return object
+	 */
+	public static function get_instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -226,7 +143,7 @@ class Settings {
 	public function section_callback(): void {
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Configure the FilePond integration settings. Leave the error messages blank to use the FilePond default messages.', 'wp-filepond' )
+			esc_html__( 'Configure the FilePond integration settings.', 'wp-filepond' )
 		);
 	}
 
@@ -330,27 +247,6 @@ class Settings {
 	}
 
 	/**
-	 * Callback function to render the "Enable Preview" checkbox in the settings page.
-	 *
-	 * This function retrieves the stored option for enabling file preview, ensures its validity,
-	 * and outputs a checkbox input field. A description is also provided for user guidance.
-	 *
-	 * @return void
-	 */
-	public function enable_preview_callback(): void {
-		// Retrieve the enable_preview option from the database, defaulting to false.
-		$enable_preview = get_option( 'wp_filepond_enable_preview', false );
-		$enable_preview = (bool) $enable_preview; // Ensure it's strictly boolean
-
-		// Output the checkbox input field with proper escaping and checked attribute handling.
-		printf(
-			'<label><input type="checkbox" name="wp_filepond_enable_preview" value="1" %s> <span class="help-text">%s</span></label>',
-			esc_attr( checked( $enable_preview, true, false ) ), // Ensure proper checkbox handling
-			esc_html__( 'Check if you want to preview the file uploaded.', 'wp-filepond' )
-		);
-	}
-
-	/**
 	 * Callback function to render the max file size setting field.
 	 * 
 	 * This function retrieves the max file size option from the database and 
@@ -372,57 +268,6 @@ class Settings {
 		printf(
 			'<p class="description">%s</p>',
 			esc_html__( 'Default max. file size in MB. Can be overridden in the field settings.', 'wp-filepond' )
-		);
-	}
-
-	/**
-	 * Callback function to render the "Preview Height" input field in the settings page.
-	 *
-	 * This function retrieves the stored preview height value, ensures it is a valid integer,
-	 * and outputs a number input field. A description is also provided for user guidance.
-	 *
-	 * @return void
-	 */
-	public function preview_height_callback(): void {
-		// Retrieve the preview height option from the database, defaulting to 100.
-		$preview_height = get_option( 'wp_filepond_preview_height', 100 );
-		$preview_height = is_numeric( $preview_height ) ? intval( $preview_height ) : 100; // Ensure it's a valid integer
-
-		// Output the input field with proper escaping.
-		printf(
-			'<input type="number" name="wp_filepond_preview_height" value="%d" min="1" step="1">',
-			esc_attr( $preview_height ) // Escape output to prevent XSS
-		);
-
-		// Output the description with proper escaping.
-		printf(
-			'<p>%s</p>',
-			esc_html__( 'Height of the file preview.', 'wp-filepond' )
-		);
-	}
-
-	/**
-	 * Callback function to render the "Upload Location" input field in the settings page.
-	 *
-	 * This function retrieves the stored upload location value, ensures it is a valid string,
-	 * and outputs an input field for user customization.
-	 *
-	 * @return void
-	 */
-	public function upload_location_callback(): void {
-		// Retrieve the upload location option from the database, defaulting to an empty string.
-		$upload_location = get_option( 'wp_filepond_upload_location', '' );
-	
-		// Output the input field with proper escaping.
-		printf(
-			'<input type="text" name="wp_filepond_upload_location" value="%s">',
-			esc_attr( $upload_location ) // Escape output to prevent XSS
-		);
-
-		// Output the description with proper escaping.
-		printf(
-			'<p>%s</p>',
-			esc_html__( 'Location of the uploaded files. The directory relative to the WordPress uploads directory (e.g. "uploads/your-custom-folder"). Leave blank to use the default WordPress upload location.', 'wp-filepond' )
 		);
 	}
 }

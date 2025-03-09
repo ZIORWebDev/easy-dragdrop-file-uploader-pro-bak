@@ -37,6 +37,15 @@ class Plugin {
 	 */
 	protected static ?Plugin $instance = null;
 
+	/**
+	 * Includes necessary plugin files.
+	 */
+	private function includes(): void {
+		require_once PLUGIN_DIR . 'vendor/autoload.php';
+		require_once PLUGIN_DIR . 'includes/functions.php';
+		require_once PLUGIN_DIR . 'includes/loader.php';
+		require_once PLUGIN_DIR_PRO . 'includes/loader.php';
+	}
 
 	/**
 	 * Initializes the plugin.
@@ -67,6 +76,10 @@ class Plugin {
 			define( "{$namespace}\\PLUGIN_DIR", plugin_dir_path( __FILE__ ) );
 		}
 
+		if ( ! defined( "{$namespace}\\PLUGIN_DIR_PRO" ) ) {
+			define( "{$namespace}\\PLUGIN_DIR_PRO", plugin_dir_path( __FILE__ ) . 'pro/' );
+		}
+
 		if ( ! defined( "{$namespace}\\PLUGIN_URL" ) ) {
 			define( "{$namespace}\\PLUGIN_URL", plugin_dir_url( __FILE__ ) );
 		}
@@ -78,16 +91,6 @@ class Plugin {
 		if ( ! defined( "{$namespace}\\ENCRYPT_KEY" ) ) {
 			define( "{$namespace}\\ENCRYPT_KEY", 'GBJJylX5wL8B15h55BlON9PUn7eLtL9R' );
 		}
-	}
-
-	/**
-	 * Includes necessary plugin files.
-	 */
-	private function includes(): void {
-		require_once PLUGIN_DIR . 'vendor/autoload.php';
-		require_once PLUGIN_DIR . 'includes/functions.php';
-		require_once PLUGIN_DIR . 'includes/loader.php';
-		require_once PLUGIN_DIR . 'includes/pro/loader.php';
 	}
 
 	/**
@@ -118,7 +121,7 @@ class Plugin {
 	 * Loads plugin text domain for translations.
 	 */
 	public function load_plugin_textdomain(): void {
-		load_plugin_textdomain( 'filepond-wp-integration', false, PLUGIN_DIR . '/languages' );
+		load_plugin_textdomain( 'wp-filepond', false, PLUGIN_DIR . '/languages' );
 	}
 
 	/**
@@ -126,13 +129,7 @@ class Plugin {
 	 *
 	 * This function is executed when the plugin is activated.
 	 */
-	public function activate_plugin(): void {
-		$free_plugin = 'filepond-wp-integration/filepond-wp-integration.php';
-		// Deactivate the free plugin version if exists
-		if ( is_plugin_active( $free_plugin ) ) {
-			deactivate_plugins( $free_plugin );
-		}
-	}
+	public function activate_plugin(): void { }
 
 	/**
 	 * Plugin deactivation callback.
@@ -149,8 +146,8 @@ class Plugin {
 	 */
 	public function add_settings_link( array $links ): array {
 		// Define the settings link URL
-		$settings_url  = admin_url( 'options-general.php?page=filepond-wp-integration' );
-		$settings_link = sprintf( '<a href="%s">', $settings_url ) . esc_html__( 'Settings', 'filepond-wp-integration' ) . '</a>';
+		$settings_url  = admin_url( 'options-general.php?page=wp-filepond' );
+		$settings_link = sprintf( '<a href="%s">', $settings_url ) . esc_html__( 'Settings', 'wp-filepond' ) . '</a>';
 
 		// Prepend the settings link to the existing links.
 		array_unshift( $links, $settings_link );

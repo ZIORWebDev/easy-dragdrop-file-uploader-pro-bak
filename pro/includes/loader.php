@@ -39,12 +39,12 @@ class Loader {
 	public function load() {
 		// Set up SPL autoloader.
 		spl_autoload_register( function ( $class ) {
-			if ( ! preg_match( "/^ZIOR\\\\FilePondPro.+$/", $class ) ) {
+			if ( ! preg_match( "/^ZIOR\\\\FilePond\\\\Pro.+$/", $class ) ) {
 				return;
 			}
 
 			$classes = array(
-
+				'Settings' => PLUGIN_DIR . 'pro/includes/classes/class-settings.php',
 			);
 
 			$class_name = explode( "\\", $class );
@@ -52,6 +52,8 @@ class Loader {
 			if ( ! empty( $classes[ end( $class_name ) ] ) ) {
 				include $classes[ end( $class_name ) ];
 			}
+
+			Settings::get_instance();
 		} );
 	}
 }
