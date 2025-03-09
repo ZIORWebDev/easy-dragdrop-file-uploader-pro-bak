@@ -1,6 +1,8 @@
 <?php
 namespace ZIOR\FilePond\Pro;
 
+use ZIOR\FilePond\Pro\Settings as SettingsPro;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -27,7 +29,7 @@ class Loader {
 
 		return self::$instance;
 	}
-
+	
 	/**
 	 * Registers the autoloader and initializes classes..
 	 *
@@ -44,7 +46,7 @@ class Loader {
 			}
 
 			$classes = array(
-				'Settings' => PLUGIN_DIR . 'pro/includes/classes/class-settings.php',
+				'Settings' => PLUGIN_DIR_PRO . 'includes/classes/class-settings.php',
 			);
 
 			$class_name = explode( "\\", $class );
@@ -52,8 +54,8 @@ class Loader {
 			if ( ! empty( $classes[ end( $class_name ) ] ) ) {
 				include $classes[ end( $class_name ) ];
 			}
-
-			Settings::get_instance();
 		} );
+
+		SettingsPro::get_instance();
 	}
 }

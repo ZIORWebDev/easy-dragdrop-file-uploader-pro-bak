@@ -39,6 +39,11 @@ class Loader {
 	public function load() {
 		// Set up SPL autoloader.
 		spl_autoload_register( function ( $class ) {
+
+			if ( preg_match( "/^ZIOR\\\\FilePond\\\\Pro\\\\.+$/", $class ) ) {
+				return;
+			}
+
 			if ( ! preg_match( "/^ZIOR\\\\FilePond.+$/", $class ) ) {
 				return;
 			}

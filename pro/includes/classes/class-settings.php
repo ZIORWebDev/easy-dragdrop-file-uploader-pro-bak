@@ -15,30 +15,58 @@ class Settings {
 	 */
 	private static $instance = null;
 
-	private function get_settings_fields( $settings_fields ): array {
+	/**
+	 * Class constructor.
+	 *
+	 * Hooks into WordPress to add the plugin's settings page and register settings.
+	 *
+	 * @return void
+	 */
+	public function __construct() {
+		add_filter( 'wp_filepond_settings_fields', array( $this, 'get_settings_fields' ) );
+		add_filter( 'wp_filepond_settings_options', array( $this, 'get_settings_options' ) );
+		add_filter( 'wp_filepond_settings_sections', array( $this, 'get_settings_sections' ) );
+	}
+
+	/**
+	 * Returns instance of Settings.
+	 *
+	 * @return object
+	 */
+	public static function get_instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+
+	public function get_settings_fields( $settings_fields ): array {
 		$settings_fields = array_merge( $settings_fields, array(
 			array(
 				'id'       => 'wp_filepond_enable_preview',
 				'title'    => __( 'Enable Preview', 'wp-filepond' ),
 				'callback' => array( $this, 'enable_preview_callback' ),
+				'section'  => 'wp_filepond_pro_section',
 			),
-			array(
-				'id'       => 'wp_filepond_preview_height',
-				'title'    => __( 'Preview Height', 'wp-filepond' ),
-				'callback' => array( $this, 'preview_height_callback' ),
-			),
-			array(
-				'id'       => 'wp_filepond_upload_location',
-				'title'    => __( 'Upload Location', 'wp-filepond' ),
-				'callback' => array( $this, 'upload_location_callback' ),
-			),
-			array(
-				'id'       => 'wp_filepond_enable_media_library',
-				'title'    => __( 'Add file to media library', 'wp-filepond' ),
-				'callback' => array( $this, 'enable_media_library_callback' ),
-			)
+			// array(
+			// 	'id'       => 'wp_filepond_preview_height',
+			// 	'title'    => __( 'Preview Height', 'wp-filepond' ),
+			// 	'callback' => array( $this, 'preview_height_callback' ),
+			// ),
+			// array(
+			// 	'id'       => 'wp_filepond_upload_location',
+			// 	'title'    => __( 'Upload Location', 'wp-filepond' ),
+			// 	'callback' => array( $this, 'upload_location_callback' ),
+			// ),
+			// array(
+			// 	'id'       => 'wp_filepond_enable_media_library',
+			// 	'title'    => __( 'Add file to media library', 'wp-filepond' ),
+			// 	'callback' => array( $this, 'enable_media_library_callback' ),
+			// )
 		) );
-
+		print_r($settings_fields);
 		return $settings_fields;
 	}
 
@@ -47,7 +75,7 @@ class Settings {
 	 *
 	 * @return array The settings options.
 	 */
-	private function get_settings_options( $settings_options ): array {
+	public function get_settings_options( $settings_options ): array {
 		$settings_options = array_merge( $settings_options, array(
 			array(
 				'option_group' => 'wp_filepond_options_group',
@@ -85,8 +113,6 @@ class Settings {
 				'sanitize'     => 'absint',
 			),
 		) );
-		
-		print_r( $settings_options );
 
 		return $settings_options;
 	}
@@ -96,7 +122,7 @@ class Settings {
 	 *
 	 * @return array The settings sections.
 	 */
-	private function get_settings_sections( $settings_sections ): array {
+	public function get_settings_sections( $settings_sections ): array {
 		$settings_sections = array_merge( $settings_sections, array(
 			'wp_filepond_pro_section' => array(
 				'title'    => __( 'Pro Settings', 'wp-filepond' ),
@@ -105,32 +131,6 @@ class Settings {
 		) );
 
 		return $settings_sections;
-	}
-
-	/**
-	 * Class constructor.
-	 *
-	 * Hooks into WordPress to add the plugin's settings page and register settings.
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		add_filter( 'wp_filepond_settings_fields', array( $this, 'get_settings_fields' ) );
-		add_filter( 'wp_filepond_settings_options', array( $this, 'get_settings_options' ) );
-		add_filter( 'wp_filepond_settings_sections', array( $this, 'get_settings_sections' ) );
-	}
-
-	/**
-	 * Returns instance of Settings.
-	 *
-	 * @return object
-	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
 	}
 
 	/**
@@ -143,33 +143,34 @@ class Settings {
 	public function section_callback(): void {
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Configure the FilePond integration settings.', 'wp-filepond' )
+			esc_html__( 'Configure the WP FilePond Pro integration settings.', 'wp-filepond' )
 		);
 	}
 
 	/**
-	 * Callback function to render the "File Type Error Message" textarea in the settings page.
+	 * Callback function to render the "Enable Preview" checkbox in the settings page.
 	 *
-	 * This function retrieves the stored error message for invalid file types, sanitizes it,
-	 * and outputs a textarea input field for user customization.
+	 * This function retrieves the stored option for enabling file preview, ensures its validity,
+	 * and outputs a checkbox input field. A description is also provided for user guidance.
 	 *
 	 * @return void
 	 */
-	public function file_type_error_message_callback(): void {
-		// Retrieve the file type error message, defaulting to an empty string.
-		$message = get_option( 'wp_filepond_file_type_error', '' );
-		$message = sanitize_textarea_field( $message ); // Ensure safe text output
+	public function enable_preview_callback(): void {
+		// Retrieve the enable_preview option from the database, defaulting to false.
+		$enable_preview = get_option( 'wp_filepond_enable_preview', 0 );
+		$enable_preview = absint( $enable_preview ); // Ensure it's strictly integer
 
-		// Output the textarea field with proper escaping.
-		printf(
-			'<textarea name="wp_filepond_file_type_error" rows="3" cols="50" maxlength="120">%s</textarea>',
-			esc_textarea( $message ) // Escape output to prevent XSS
+		// Description for the checkbox, with proper escaping for security.
+		$description = sprintf(
+			'<span class="help-text">%s</span>',
+			esc_html__( 'Check if you want to preview the file uploaded.', 'wp-filepond' )
 		);
 
-		// Output the description with proper escaping.
+		// Output the checkbox input field with proper escaping and checked attribute handling.
 		printf(
-			'<p class="help-text">%s</p>',
-			esc_html__( 'Enter an error message to show when an uploaded file type is invalid. Leave blank to use the FilePond default message.', 'wp-filepond' )
+			'<label><input type="checkbox" name="wp_filepond_enable_preview" value="1" %s> %s</label>',
+			checked( $enable_preview, true, false ), // Ensure proper checkbox handling
+			$description
 		);
 	}
 

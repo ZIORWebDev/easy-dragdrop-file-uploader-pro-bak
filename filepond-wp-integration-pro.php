@@ -44,6 +44,8 @@ class Plugin {
 		require_once PLUGIN_DIR . 'vendor/autoload.php';
 		require_once PLUGIN_DIR . 'includes/functions.php';
 		require_once PLUGIN_DIR . 'includes/loader.php';
+
+		require_once PLUGIN_DIR_PRO . 'includes/functions.php';
 		require_once PLUGIN_DIR_PRO . 'includes/loader.php';
 	}
 
@@ -70,26 +72,24 @@ class Plugin {
 	 * Ensures constants are only defined once to prevent conflicts.
 	 */
 	private function setup_constants(): void {
-		$namespace = __NAMESPACE__;
-
-		if ( ! defined( "{$namespace}\\PLUGIN_DIR" ) ) {
-			define( "{$namespace}\\PLUGIN_DIR", plugin_dir_path( __FILE__ ) );
+		if ( ! defined( "PLUGIN_DIR" ) ) {
+			define( "PLUGIN_DIR", plugin_dir_path( __FILE__ ) );
 		}
 
-		if ( ! defined( "{$namespace}\\PLUGIN_DIR_PRO" ) ) {
-			define( "{$namespace}\\PLUGIN_DIR_PRO", plugin_dir_path( __FILE__ ) . 'pro/' );
+		if ( ! defined( "PLUGIN_DIR_PRO" ) ) {
+			define( "PLUGIN_DIR_PRO", plugin_dir_path( __FILE__ ) . 'pro/' );
 		}
 
-		if ( ! defined( "{$namespace}\\PLUGIN_URL" ) ) {
-			define( "{$namespace}\\PLUGIN_URL", plugin_dir_url( __FILE__ ) );
+		if ( ! defined( "PLUGIN_URL" ) ) {
+			define( "PLUGIN_URL", plugin_dir_url( __FILE__ ) );
 		}
 
-		if ( ! defined( "{$namespace}\\PLUGIN_FILE" ) ) {
-			define( "{$namespace}\\PLUGIN_FILE", __FILE__ );
+		if ( ! defined( "PLUGIN_FILE" ) ) {
+			define( "PLUGIN_FILE", __FILE__ );
 		}
 
-		if ( ! defined( "{$namespace}\\ENCRYPT_KEY" ) ) {
-			define( "{$namespace}\\ENCRYPT_KEY", 'GBJJylX5wL8B15h55BlON9PUn7eLtL9R' );
+		if ( ! defined( "ENCRYPT_KEY" ) ) {
+			define( "ENCRYPT_KEY", 'GBJJylX5wL8B15h55BlON9PUn7eLtL9R' );
 		}
 	}
 
