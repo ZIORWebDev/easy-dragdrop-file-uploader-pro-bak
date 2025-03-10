@@ -2,6 +2,7 @@
 namespace ZIOR\FilePond\Pro;
 
 use ZIOR\FilePond\Pro\Settings as SettingsPro;
+use ZIOR\FilePond\Pro\Uploader as UploaderPro;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -47,6 +48,7 @@ class Loader {
 
 			$classes = array(
 				'Settings' => WP_FILEPOND_PLUGIN_DIR_PRO . 'includes/classes/class-settings.php',
+				'Uploader' => WP_FILEPOND_PLUGIN_DIR_PRO . 'includes/classes/class-uploader.php',
 			);
 
 			$class_name = explode( "\\", $class );
@@ -57,5 +59,6 @@ class Loader {
 		} );
 
 		SettingsPro::get_instance();
+		UploaderPro::get_instance();
 	}
 }
