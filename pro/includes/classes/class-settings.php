@@ -23,8 +23,8 @@ class Settings {
 	 * @return void
 	 */
 	public function __construct() {
+		add_filter( 'wp_filepond_options', array( $this, 'get_options' ) );
 		add_filter( 'wp_filepond_settings_fields', array( $this, 'get_settings_fields' ) );
-		add_filter( 'wp_filepond_settings_options', array( $this, 'get_settings_options' ) );
 		add_filter( 'wp_filepond_settings_sections', array( $this, 'get_settings_sections' ) );
 	}
 
@@ -40,7 +40,6 @@ class Settings {
 
 		return self::$instance;
 	}
-
 
 	public function get_settings_fields( $settings_fields ): array {
 		$settings_fields = array_merge( $settings_fields, array(
@@ -78,8 +77,8 @@ class Settings {
 	 *
 	 * @return array The settings options.
 	 */
-	public function get_settings_options( $settings_options ): array {
-		$settings_options = array_merge( $settings_options, array(
+	public function get_options( $options ): array {
+		$options = array_merge( $options, array(
 			array(
 				'option_group' => 'wp_filepond_options_group',
 				'option_name'  => 'wp_filepond_enable_media_library',
@@ -102,7 +101,7 @@ class Settings {
 			),
 		) );
 
-		return $settings_options;
+		return $options;
 	}
 
 	/**
