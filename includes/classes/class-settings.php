@@ -160,13 +160,9 @@ class Settings {
 		$builder = MimeMappingBuilder::create();
 
 		// Iterate through the MIME types and add them to the builder.
-		// foreach ( $mime_types as $extension => $mime_type ) {
-		// 	$builder->add( $mime_type, $extension );
-		// }
-
-		$mapping = $builder->getMapping();
-
-		print_r($mapping);
+		foreach ( $mime_types as $extension => $mime_type ) {
+			$builder->add( $mime_type, $extension );
+		}
 	}
 
 	/**
