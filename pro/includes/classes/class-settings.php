@@ -1,6 +1,9 @@
 <?php
 namespace ZIOR\FilePond\Pro;
 
+use Mimey\MimeMappingBuilder;
+use Mimey\MimeTypes;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -26,7 +29,7 @@ class Settings {
 		add_filter( 'wp_filepond_options', array( $this, 'get_options' ) );
 		add_filter( 'wp_filepond_settings_fields', array( $this, 'get_settings_fields' ) );
 		add_filter( 'wp_filepond_settings_sections', array( $this, 'get_settings_sections' ) );
-		add_filter( 'wp_filepond_additional_mime_types', array( $this, 'get_additional_mime_types' ) );
+		add_filter( 'wp_filepond_mimes_instance', array( $this, 'get_mimes_instance' ) );
 	}
 
 	/**
@@ -42,13 +45,11 @@ class Settings {
 		return self::$instance;
 	}
 
-	public function get_additional_mime_types( array $mime_types ): array {
-		$mime_types = array_merge( $mime_types, array(
-			'heic' => 'image/heic',
-			'heif' => 'image/heif',
-		) );
+	public function get_mimes_instance( $mimes ): MimeTypes {
+		$builder = MimeMappingBuilder::load( WP_FILEPOND_MIME_CACHE_FILE );
+		$mimes   = new MimeTypes( $builder->getMapping() );
 
-		return $mime_types;
+		return $mimes;
 	}
 
 	public function get_settings_fields( $settings_fields ): array {
