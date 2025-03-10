@@ -46,6 +46,8 @@ class Assets {
 		wp_enqueue_script( 'wp-filepond-uploader', WP_FILEPOND_PLUGIN_URL . 'dist/main.min.js', array( 'jquery' ), null, true );
 
 		wp_localize_script( 'wp-filepond-uploader', 'FilePondUploader', $uploader_configurations );
+
+		
 	}
 
 	/**

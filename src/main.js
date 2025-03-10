@@ -11,6 +11,9 @@ $(document).ready(function () {
         const configuration = Object.assign({}, getConfiguration($(this)), filePondIntegration);
         const filePondInstance = createFilePondInstance($(this)[0], configuration);
 
+        // Raised event a FilePond instance is created
+        $(document).trigger("wp_filepond_instance_created", filePondInstance);
+
         filePondInstances.set(this, filePondInstance);
     });
 
