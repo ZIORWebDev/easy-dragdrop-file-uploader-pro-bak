@@ -2,7 +2,7 @@
 namespace ZIOR\FilePond\Pro;
 
 use function ZIOR\FilePond\get_configuration;
-
+use function ZIOR\FilePond\get_plugin_options;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
