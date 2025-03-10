@@ -8,6 +8,6 @@
         }
     ],
     "require": {
-        "ralouphie/mimey": "^1.0"
+        "elephox/mimey": "^4.0"
     }
 }
