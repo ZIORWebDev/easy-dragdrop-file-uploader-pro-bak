@@ -33,7 +33,7 @@ class Uploader {
 		}
 
 		// Get the file type
-		$file_type = wp_check_filetype( $file_path );
+		$file_type = @wp_check_filetype( $file_path );
 
 		// Prepare an array of post data for the attachment
 		$attachment = array(
@@ -82,7 +82,7 @@ class Uploader {
 	 * @return void
 	 */
 	public function __construct() {
-		add_action( 'wp_filepond_process_field', array( $this, 'process_field' ), 10, 3 );
+		add_action( 'wp_filepond_process_field', array( $this, 'process_field' ), 10 );
 	}
 
 	public function process_field( array $field ): void {
@@ -100,7 +100,9 @@ class Uploader {
 			return;
 		}
 
-		foreach ( $field['raw_value'] as $file_url ) {
+		$files = is_array( $field['raw_value'] ) ? $field['raw_value'] : array( $field['raw_value'] );
+
+		foreach ( $files as $file_url ) {
 			$attach_id = $this->add_to_media_library( $file_url );
 		}
 
