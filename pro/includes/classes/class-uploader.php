@@ -83,6 +83,11 @@ class Uploader {
 	 */
 	public function __construct() {
 		add_action( 'wp_filepond_process_field', array( $this, 'process_field' ), 10 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts' ), 10 );
+	}
+
+	public function enqueue_frontend_scripts(): void {
+		wp_enqueue_script( 'wp-filepond-uploader-pro', WP_FILEPOND_PLUGIN_URL . 'dist/main-pro.min.js', array( 'jquery' ), null, true );
 	}
 
 	public function process_field( array $field ): void {

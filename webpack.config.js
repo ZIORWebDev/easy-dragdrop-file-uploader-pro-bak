@@ -11,6 +11,7 @@ module.exports = {
     devtool: isProduction ? false : "source-map",
     entry: {
         "main": "./src/main.js",
+        "main-pro": "./pro/src/main.js",
     },
     externals: {
         jquery: "jQuery",
@@ -62,6 +63,12 @@ module.exports = {
                 filepond: {
                     test: /[\\/]node_modules[\\/](filepond|filepond-plugin.*)[\\/]/,
                     name: "filepond",
+                    chunks: "all",
+                    enforce: true,
+                },
+                libheif: {
+                    test: /[\\/]node_modules[\\/](libheif.*)[\\/]/,
+                    name: "libheif",
                     chunks: "all",
                     enforce: true,
                 },
