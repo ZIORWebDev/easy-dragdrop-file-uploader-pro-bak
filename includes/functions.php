@@ -84,8 +84,8 @@ function convert_extentions_to_mime_types( string $extentions ): array {
 	$mime_types      = array();
 	$file_extensions = array_map( 'trim', explode( ',', $extentions ) );
 
-	$builder = \Mimey\MimeMappingBuilder::load( WP_FILEPOND_MIME_CACHE_FILE );
-	$mimes   = new \Mimey\MimeTypes( $builder->getMapping() );
+	$builder = MimeMappingBuilder::load( WP_FILEPOND_MIME_CACHE_FILE );
+	$mimes   = new MimeTypes( $builder->getMapping() );
 
 	// Allow developers to modify the file extensions
 	$file_extensions = apply_filters( 'wp_filepond_file_extensions', $file_extensions );

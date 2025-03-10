@@ -17,6 +17,7 @@
 namespace ZIOR\FilePond;
 
 use ZIOR\FilePond\Pro\Loader as LoaderPro;
+use Mimey\MimeMappingBuilder;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -89,7 +90,7 @@ class Plugin {
 		}
 
 		if ( ! defined( "WP_FILEPOND_MIME_CACHE_FILE" ) ) {
-			define( "WP_FILEPOND_MIME_CACHE_FILE", plugin_dir_path( __FILE__ ) . 'cache/mimey.txt' );
+			define( "WP_FILEPOND_MIME_CACHE_FILE", plugin_dir_path( __FILE__ ) . 'cache/mimey.php' );
 		}
 	}
 
@@ -131,7 +132,7 @@ class Plugin {
 	 */
 	public function activate_plugin(): void {
 		// Create the MIME mapping builder
-		$builder = \Mimey\MimeMappingBuilder::create();
+		$builder = MimeMappingBuilder::create();
 
 		$builder->add( 'image/heif', 'heif' );
 		$builder->add( 'image/heic', 'heic' );
