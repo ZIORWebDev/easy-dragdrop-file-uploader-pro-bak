@@ -8,6 +8,6 @@
         }
     ],
     "require": {
-        "elephox/mimey": "^4.0"
+        "ascteam/mimey": "^3.0"
     }
 }
