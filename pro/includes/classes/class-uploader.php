@@ -32,7 +32,7 @@ class Uploader {
 	public function after_upload( $uploaded, $file, $args ) {
 		$plugin_options = get_plugin_options();
 
-		if ( ! isset( $plugin_options['wp_filepond_enable_preview'] ) ) {
+		if ( ! ( $plugin_options['wp_filepond_enable_media_library'] ?? false ) ) {
 			return;
 		}
 
@@ -49,6 +49,7 @@ class Uploader {
 
 		// Generate attachment metadata
 		require_once ABSPATH . 'wp-admin/includes/image.php';
+
 		$attach_data = wp_generate_attachment_metadata( $attach_id, $file_path );
 		wp_update_attachment_metadata( $attach_id, $attach_data );
 
