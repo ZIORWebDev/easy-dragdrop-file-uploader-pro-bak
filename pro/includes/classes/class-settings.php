@@ -26,6 +26,7 @@ class Settings {
 		add_filter( 'wp_filepond_options', array( $this, 'get_options' ) );
 		add_filter( 'wp_filepond_settings_fields', array( $this, 'get_settings_fields' ) );
 		add_filter( 'wp_filepond_settings_sections', array( $this, 'get_settings_sections' ) );
+		add_filter( 'wp_filepond_additional_mime_types', array( $this, 'get_additional_mime_types' ) );
 	}
 
 	/**
@@ -39,6 +40,15 @@ class Settings {
 		}
 
 		return self::$instance;
+	}
+
+	public function get_additional_mime_types( array $mime_types ): array {
+		$mime_types = array_merge( $mime_types, array(
+			'heic' => 'image/heic',
+			'heif' => 'image/heif',
+		) );
+
+		return $mime_types;
 	}
 
 	public function get_settings_fields( $settings_fields ): array {
