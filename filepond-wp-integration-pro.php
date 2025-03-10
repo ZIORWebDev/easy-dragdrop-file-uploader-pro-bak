@@ -126,7 +126,16 @@ class Plugin {
 	 *
 	 * This function is executed when the plugin is activated.
 	 */
-	public function activate_plugin(): void {}
+	public function activate_plugin(): void {
+		// Create the MIME mapping builder
+		$builder = MimeMappingBuilder::create();
+
+		$builder->add( 'image/heif', 'heif' );
+		$builder->add( 'image/heic', 'heic' );
+
+		// Save conversions to the cache file
+		$builder->save( WP_FILEPOND_MIME_CACHE_FILE );
+	}
 
 	/**
 	 * Plugin deactivation callback.
