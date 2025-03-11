@@ -1,7 +1,7 @@
 import {convertHeif} from 'libheif-web';
 
 $(document).on("wp_filepond_instance_created", function(event, filePondInstance) {
-    console.log("FilePond instance created:", filePondInstance);
+    console.log("FilePond instance created 1:", filePondInstance);
 
     // Convert HEIC/HEIF to JPEG before adding to FilePond
     filePondInstance.on("addfile", async function (error, file) {

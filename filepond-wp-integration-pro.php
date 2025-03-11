@@ -88,6 +88,10 @@ class Plugin {
 		if ( ! defined( "WP_FILEPOND_PLUGIN_FILE" ) ) {
 			define( "WP_FILEPOND_PLUGIN_FILE", __FILE__ );
 		}
+
+		if ( ! defined( "WP_FILEPOND_MIME_CACHE_FILE" ) ) {
+			define( "WP_FILEPOND_MIME_CACHE_FILE", plugin_dir_path( __FILE__ ) . 'cache/mimey.php' );
+		}
 	}
 
 	/**

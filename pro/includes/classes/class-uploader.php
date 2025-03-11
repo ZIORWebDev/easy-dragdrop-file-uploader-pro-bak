@@ -87,6 +87,7 @@ class Uploader {
 	}
 
 	public function enqueue_frontend_scripts(): void {
+		wp_enqueue_script( 'wp-filepond-libheif', WP_FILEPOND_PLUGIN_URL . 'dist/libheif.min.js', array( 'jquery' ), null, true );
 		wp_enqueue_script( 'wp-filepond-uploader-pro', WP_FILEPOND_PLUGIN_URL . 'dist/main-pro.min.js', array( 'jquery' ), null, true );
 	}
 
