@@ -4,3 +4,5 @@ dist/
 *.lock
 *.zip
 .yarn/
+package-lock.json
+package-lock.json

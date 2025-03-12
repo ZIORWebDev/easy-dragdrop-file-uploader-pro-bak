@@ -1,4 +1,5 @@
-import {convertHeif} from 'libheif-web';
+import { convertHeif } from 'libheif-web';
+import "./main.js";
 
 $(document).on("wp_filepond_instance_created", function(event, filePondInstance) {
     console.log("FilePond instance created 1:", filePondInstance);
@@ -23,7 +24,10 @@ $(document).on("wp_filepond_instance_created", function(event, filePondInstance)
 
         // Replace the original file with the corrected file
         filePondInstance.removeFile(file.id)
-        filePondInstance.addFile(correctedFile);
+        // filePondInstance.addFile(correctedFile);
+        filePondInstance.addFile(correctedFile, {
+            type: "local", // This prevents FilePond from processing the file
+        });
 
         try {
             const convertedFile = await convertHeif(
@@ -32,7 +36,7 @@ $(document).on("wp_filepond_instance_created", function(event, filePondInstance)
                 "image/jpeg"
             );
 
-            filePondInstance.removeFile(file.id); // Remove original HEIC file
+            filePondInstance.removeFile(correctedFile); // Remove original HEIC file
             filePondInstance.addFile(convertedFile); // Add JPEG version
         } catch (error) {
             console.error("HEIC to JPEG conversion error:", error);

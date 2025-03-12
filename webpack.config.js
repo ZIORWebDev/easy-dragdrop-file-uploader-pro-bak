@@ -10,8 +10,7 @@ module.exports = {
     mode: isProduction ? "production" : "development",
     devtool: isProduction ? false : "source-map",
     entry: {
-        "main": "./src/main.js",
-        "main-pro": "./pro/src/main.js",
+        "main": "./src/pro.js",
     },
     externals: {
         jquery: "jQuery",
