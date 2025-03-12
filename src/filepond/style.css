@@ -4,3 +4,22 @@
     width: 100%;
     display: block;
 }
+
+.filepond--file[data-loading="true"] .filepond--file-info {
+    opacity: 0.5;
+    /* Dim the file info */
+    position: relative;
+}
+
+.filepond--file[data-loading="true"]::after {
+    content: "Processing...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}

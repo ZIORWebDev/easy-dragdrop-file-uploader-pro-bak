@@ -10,7 +10,7 @@ module.exports = {
     mode: isProduction ? "production" : "development",
     devtool: isProduction ? false : "source-map",
     entry: {
-        "main": "./src/pro.js",
+        main: "./src/pro.js"
     },
     externals: {
         jquery: "jQuery",
@@ -52,8 +52,14 @@ module.exports = {
         splitChunks: {
             chunks: "all",
             cacheGroups: {
-                common: {
-                    test: /[\\/]node_modules[\\/]/,
+                heic2any: {
+                    test: /[\\/]node_modules[\\/]heic2any[\\/]/,
+                    name: "heic2any",
+                    chunks: "all",
+                    enforce: true,
+                },
+                vendors: {
+                    test: /[\\/]node_modules[\\/](?!heic2any)/,
                     name: "vendors",
                     chunks: "all",
                     enforce: true,
