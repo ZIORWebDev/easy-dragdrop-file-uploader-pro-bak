@@ -18,8 +18,8 @@ function isHEIFSupported() {
 wpFilepond.addFilter("wp_filepond_plugins", registerFilePondPlugins);
 
 $(document).on("wp_filepond_instance_created", function (event, filePondInstance) {
-    // Some browsers don't support HEIC/HEIF images and it causes an error.
-    // This is a workaround to check if the file type is a HEIC/HEIF and assign the correct MIME type.
+    // Since some browsers don't support HEIC/HEIF images, errors may occur.
+    // This workaround detects HEIC/HEIF file extensions and assigns the correct MIME type.
     filePondInstance.fileValidateTypeDetectType = async (file, type) => {
         return new Promise((resolve, reject) => {
             // If the file type is already set, return it
