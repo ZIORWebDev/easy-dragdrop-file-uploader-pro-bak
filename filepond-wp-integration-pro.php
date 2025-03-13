@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:  FilePond WP Integration
+ * Plugin Name:  FilePond WP Integration Pro
  * Plugin URI:   https://github.com/ZIORWebDev/filepond-wp-integration
  * Description:  Enhances Elementor Pro Forms with a FilePond-powered drag-and-drop uploader for seamless file uploads.
  * Author:       ZiorWeb.Dev

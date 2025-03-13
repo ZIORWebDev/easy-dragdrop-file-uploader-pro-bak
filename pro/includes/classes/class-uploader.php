@@ -24,10 +24,7 @@ class Uploader {
 	 * @param string $file_url The URL of the file to add.
 	 * @return int The attachment ID on success, 0 on failure.
 	 */
-	private function add_to_media_library( string $file_url ): int {
-		// Get the file path from the URL
-		$file_path = $this->get_file_path_from_url( $file_url );
-
+	private function add_to_media_library( string $file_path ): int {
 		if ( ! file_exists( $file_path ) ) {
 			return 0;
 		}
@@ -53,25 +50,6 @@ class Uploader {
 		wp_update_attachment_metadata( $attach_id, $attach_data );
 
 		return $attach_id;
-	}
-
-	/**
-	 * Converts a file URL to a file path.
-	 *
-	 * @param string $file_url The file URL.
-	 * @return string The absolute file path.
-	 */
-	private function get_file_path_from_url( string $file_url ): string {
-		$upload_dir = wp_upload_dir();
-		$base_url   = $upload_dir['baseurl'];
-		$base_path  = $upload_dir['basedir'];
-
-		// Ensure the file is inside the uploads directory
-		if ( strpos( $file_url, $base_url ) !== false ) {
-			return str_replace( $base_url, $base_path, $file_url );
-		}
-
-		return '';
 	}
 
 	/**
@@ -102,8 +80,8 @@ class Uploader {
 
 		$files = is_array( $field['raw_value'] ) ? $field['raw_value'] : array( $field['raw_value'] );
 
-		foreach ( $files as $file_url ) {
-			$attach_id = $this->add_to_media_library( $file_url );
+		foreach ( $files as $file ) {
+			$attach_id = $this->add_to_media_library( $file );
 		}
 
 		return;
