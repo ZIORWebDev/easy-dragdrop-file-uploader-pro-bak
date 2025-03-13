@@ -29,7 +29,7 @@ class Uploader {
 		$file_path = $this->get_file_path_from_url( $file_url );
 
 		if ( ! file_exists( $file_path ) ) {
-			return 0; // File does not exist
+			return 0;
 		}
 
 		// Get the file type
