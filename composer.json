@@ -8,6 +8,7 @@
         }
     ],
     "require": {
-        "ascteam/mimey": "^3.0"
+        "ascteam/mimey": "^3.0",
+        "freemius/wordpress-sdk": "^2.11"
     }
 }

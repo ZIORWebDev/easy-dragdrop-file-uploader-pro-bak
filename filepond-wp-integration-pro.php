@@ -56,6 +56,7 @@ class Plugin {
 	 */
 	private function includes(): void {
 		require_once WP_FILEPOND_PLUGIN_DIR . 'vendor/autoload.php';
+		require_once WP_FILEPOND_PLUGIN_DIR . 'freemius.php';
 		require_once WP_FILEPOND_PLUGIN_DIR . 'includes/functions.php';
 		require_once WP_FILEPOND_PLUGIN_DIR . 'includes/loader.php';
 

@@ -1,6 +1,7 @@
 <?php
 namespace ZIOR\FilePond\Pro;
 
+use ZIOR\FilePond\Settings as MainSettings;
 use Mimey\MimeMappingBuilder;
 use Mimey\MimeTypes;
 
@@ -30,6 +31,8 @@ class Settings {
 		add_filter( 'wp_filepond_settings_fields', array( $this, 'get_settings_fields' ) );
 		add_filter( 'wp_filepond_settings_sections', array( $this, 'get_settings_sections' ) );
 		add_filter( 'wp_filepond_mimes_instance', array( $this, 'get_mimes_instance' ) );
+
+		add_action( 'init', array( $this, 'remove_marketing_promotion' ), 10 );
 	}
 
 	/**
@@ -56,25 +59,25 @@ class Settings {
 		$settings_fields = array_merge( $settings_fields, array(
 			array(
 				'id'       => 'wp_filepond_enable_media_library',
-				'title'    => __( 'Add file to media library', 'filepond-wp-integration' ),
+				'title'    => __( 'Add file to media library', 'wp-filepond' ),
 				'callback' => array( $this, 'enable_media_library_callback' ),
 				'section'  => 'wp_filepond_pro_section',
 			),
 			array(
 				'id'       => 'wp_filepond_enable_preview',
-				'title'    => __( 'Enable Preview', 'filepond-wp-integration' ),
+				'title'    => __( 'Enable Preview', 'wp-filepond' ),
 				'callback' => array( $this, 'enable_preview_callback' ),
 				'section'  => 'wp_filepond_pro_section',
 			),
 			array(
 				'id'       => 'wp_filepond_preview_height',
-				'title'    => __( 'Preview Height', 'filepond-wp-integration' ),
+				'title'    => __( 'Preview Height', 'wp-filepond' ),
 				'callback' => array( $this, 'preview_height_callback' ),
 				'section'  => 'wp_filepond_pro_section',
 			),
 			array(
 				'id'       => 'wp_filepond_upload_location',
-				'title'    => __( 'Upload Location', 'filepond-wp-integration' ),
+				'title'    => __( 'Upload Location', 'wp-filepond' ),
 				'callback' => array( $this, 'upload_location_callback' ),
 				'section'  => 'wp_filepond_pro_section',
 			),
@@ -123,7 +126,7 @@ class Settings {
 	public function get_settings_sections( $settings_sections ): array {
 		$settings_sections = array_merge( $settings_sections, array(
 			'wp_filepond_pro_section' => array(
-				'title'    => __( 'Pro Settings', 'filepond-wp-integration' ),
+				'title'    => __( 'Pro Settings', 'wp-filepond' ),
 				'callback' => array( $this, 'section_callback' )
 			)
 		) );
@@ -141,7 +144,7 @@ class Settings {
 	public function section_callback(): void {
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Configure the WP FilePond Pro integration settings.', 'filepond-wp-integration' )
+			esc_html__( 'Configure the WP FilePond Pro integration settings.', 'wp-filepond' )
 		);
 	}
 
@@ -161,7 +164,7 @@ class Settings {
 		// Description for the checkbox, with proper escaping for security.
 		$description = sprintf(
 			'<span class="help-text">%s</span>',
-			esc_html__( 'Check if you want to preview the file uploaded.', 'filepond-wp-integration' )
+			esc_html__( 'Check if you want to preview the file uploaded.', 'wp-filepond' )
 		);
 
 		// Output the checkbox input field with proper escaping and checked attribute handling.
@@ -194,7 +197,7 @@ class Settings {
 		// Output the description with proper escaping.
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Height of the file preview.', 'filepond-wp-integration' )
+			esc_html__( 'Height of the file preview.', 'wp-filepond' )
 		);
 	}
 
@@ -219,7 +222,7 @@ class Settings {
 		// Output the description with proper escaping.
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Location of the uploaded files. The directory relative to the WordPress uploads directory (e.g. "uploads/your-custom-folder"). Leave blank to use the default WordPress upload location.', 'filepond-wp-integration' )
+			esc_html__( 'Location of the uploaded files. The directory relative to the WordPress uploads directory (e.g. "uploads/your-custom-folder"). Leave blank to use the default WordPress upload location.', 'wp-filepond' )
 		);
 	}
 
@@ -239,7 +242,7 @@ class Settings {
 		// Description for the checkbox, with proper escaping for security.
 		$description = sprintf(
 			'<span class="help-text">%s</span>',
-			esc_html__( 'Check if you want to add the uploaded file to media library.', 'filepond-wp-integration' )
+			esc_html__( 'Check if you want to add the uploaded file to media library.', 'wp-filepond' )
 		);
 
 		// Output the checkbox input field with proper escaping and checked attribute handling.
@@ -248,5 +251,10 @@ class Settings {
 			checked( $enable, true, false ), // Ensure proper checkbox handling
 			$description
 		);
+	}
+
+	public function remove_marketing_promotion(): void {
+		$main_settings = MainSettings::get_instance();
+		remove_action( 'wp_filepond_settings_after', array( $main_settings, 'render_marketing_card' ), 10 );
 	}
 }
