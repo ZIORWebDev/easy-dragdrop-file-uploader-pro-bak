@@ -1,5 +1,4 @@
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import heic2any from "heic2any";
 import wpFilepond from "../filepond/helpers.js";
 
 function registerFilePondPlugins(plugins) {
@@ -61,6 +60,9 @@ $(document).on("wp_filepond_instance_created", function (event, filePondInstance
         }
 
         try {
+            // Lazy load heic2any only when needed
+            const { default: heic2any } = await import("heic2any");
+
             // Convert heic/heif to jpeg so that it can be previewed
             const convertedBlob = await heic2any({
                 blob: file.file,
